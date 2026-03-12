@@ -1,1 +1,908 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>latihan3_Farkhan Abdilah_TI-2B</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0a0a0f;
+      --cream: #f5f0e8;
+      --gold: #c9a84c;
+      --gold-light: #e8c96a;
+      --rust: #c0432a;
+      --teal: #1a6b72;
+      --teal-light: #2a9ba6;
+      --off-white: #faf8f4;
+      --muted: #7a7570;
+      --border: rgba(10,10,15,0.12);
+    }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    .masthead {
+      background: var(--ink);
+      padding: 12px 0;
+      text-align: center;
+      border-bottom: 3px solid var(--gold);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .masthead-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--cream);
+      letter-spacing: -1px;
+    }
+    .logo span { color: var(--gold); }
+    .dateline {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .edition-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 3px 10px;
+      letter-spacing: 2px;
+    }
+
+    .nav-bar {
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .nav-bar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      gap: 0;
+    }
+    .nav-bar a {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 12px 18px;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s, color 0.2s;
+      position: relative;
+    }
+    .nav-bar a:first-child { border-left: 1px solid var(--border); }
+    .nav-bar a:hover { background: var(--ink); color: var(--gold); }
+    .nav-bar a.active { background: var(--gold); color: var(--ink); font-weight: 700; }
+
+
+    .hero {
+      background: linear-gradient(135deg, var(--ink) 0%, #1a1a2e 50%, #16213e 100%);
+      padding: 64px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .hero-text h1 em { color: var(--gold); font-style: italic; }
+    .hero-text p {
+      color: #8a8a9a;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 8px 16px;
+    }
+    .hero-badge::before { content: '◈'; }
+
+    /* ── IMAGE MAP CONTAINER ────────────────────────── */
+    .map-wrapper {
+      position: relative;
+      border: 2px solid rgba(201,168,76,0.3);
+      background: #111;
+    }
+    .map-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+    .map-wrapper:hover img { opacity: 1; }
+    .map-label {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      font-weight: 700;
+    }
+    .map-hint {
+      background: rgba(0,0,0,0.7);
+      color: #8a8a9a;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      padding: 8px 16px;
+      letter-spacing: 1px;
+      border-top: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      justify-content: space-between;
+    }
+    .map-hint span { color: var(--gold); }
+
+    /* Highlight overlays for image map areas */
+    .map-overlay {
+      position: absolute;
+      pointer-events: none;
+      border: 2px solid var(--gold);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    area { cursor: pointer; }
+
+    /* ── HYPERLINK SHOWCASE ─────────────────────────── */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 32px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 40px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 3px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* Link Cards */
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+    }
+    .link-card {
+      background: var(--off-white);
+      padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .link-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .link-card:hover::before { transform: scaleX(1); }
+    .link-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); z-index: 1; }
+    .card-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: inline-block;
+      padding: 4px 8px;
+    }
+    .tag-blank { background: rgba(26,107,114,0.1); color: var(--teal); }
+    .tag-self  { background: rgba(201,168,76,0.1); color: #a07820; }
+    .tag-parent{ background: rgba(192,67,42,0.12); color: var(--rust); }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-decoration: none;
+      padding: 10px 20px;
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+      transition: all 0.2s;
+    }
+    .card-link:hover { background: var(--ink); color: var(--cream); }
+    .card-link .arrow { transition: transform 0.2s; }
+    .card-link:hover .arrow { transform: translateX(4px); }
+
+    /* ── BERITA SECTION ─────────────────────────────── */
+    .news-wrapper {
+      background: var(--cream);
+      border-top: 3px solid var(--ink);
+      border-bottom: 3px solid var(--ink);
+    }
+    .news-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 32px;
+    }
+    .news-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 48px;
+    }
+
+    /* Scrollable news column */
+    .news-scroll-box {
+      height: 520px;
+      overflow-y: auto;
+      padding-right: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) transparent;
+    }
+    .news-scroll-box::-webkit-scrollbar { width: 3px; }
+    .news-scroll-box::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 0; }
+
+    .news-article {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      animation: fadeSlide 0.5s ease both;
+    }
+    .news-article:first-child { padding-top: 0; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .article-cat {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 8px;
+    }
+    .article-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+    .article-title a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .article-title a:hover { color: var(--teal); }
+    .article-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+    }
+    .article-body {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #3a3a3a;
+    }
+    .article-body p { margin-bottom: 10px; }
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--teal);
+      text-decoration: none;
+      margin-top: 8px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--teal-light);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .read-more:hover { color: var(--gold); border-color: var(--gold); }
+
+    /* Sidebar */
+    .news-sidebar { display: flex; flex-direction: column; gap: 0; }
+    .sidebar-head {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: 0;
+    }
+    .sidebar-item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-item-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: rgba(10,10,15,0.07);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .sidebar-item-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .sidebar-item-title a {
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .sidebar-item-title a:hover { color: var(--teal); }
+    .sidebar-item-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* ── BOOKMARK ANCHORS ───────────────────────────── */
+    .bookmark-anchor {
+      display: block;
+      position: relative;
+      top: -80px;
+      visibility: hidden;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: var(--muted);
+      text-align: center;
+      padding: 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      border-top: 3px solid var(--gold);
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── DIVIDER ────────────────────────────────────── */
+    .editorial-rule {
+      max-width: 1200px;
+      margin: 0 auto 0;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .editorial-rule::before,
+    .editorial-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .rule-ornament {
+      font-size: 20px;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    /* ── SCROLL PROGRESS ────────────────────────────── */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--rust));
+      z-index: 999;
+      transition: width 0.1s;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-inner, .link-grid, .news-layout { grid-template-columns: 1fr; }
+      .hero-inner { gap: 40px; }
+      .link-grid { gap: 1px; }
+      .masthead-inner { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<!-- ══════════════════════════════════════ MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="logo">TUGAS<span>HYPERLINK</span></div>
+    <div class="dateline">KAMIS, 12 MARET 2026 &nbsp;|&nbsp; JAKARTA, INDONESIA</div>
+    <div class="edition-tag">EDISI DIGITAL</div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════ NAV BOOKMARK BAR -->
+<nav class="nav-bar">
+  <div class="nav-bar-inner">
+    <a href="#top" class="active">Beranda</a>
+    <a href="#teknologi">Teknologi</a>
+    <a href="#ekonomi">Ekonomi</a>
+    <a href="#lingkungan">Lingkungan</a>
+    <a href="#kesehatan">Kesehatan</a>
+    <a href="#olahraga">Olahraga</a>
+    <a href="#hiburan">Hiburan</a>
+    <a href="#internasional">Internasional</a>
+    <a href="#pendidikan">Pendidikan</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════ HERO + IMAGE MAP -->
+<span class="bookmark-anchor" id="top"></span>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">Peta Navigasi Interaktif</div>
+      <h1>Jelajahi <em>Dunia</em><br/>Lewat Klik</h1>
+      <p>
+        Gunakan Image Map di sebelah kanan untuk menavigasi ke situs-situs pilihan.
+        Klik area <strong style="color:var(--gold)">kotak (RECT)</strong> untuk mengunjungi
+        Politeknik Negeri Jakarta, atau area
+        <strong style="color:var(--teal-light)">lingkaran (CIRCLE)</strong> untuk menuju
+        panduan web W3Schools.
+      </p>
+      <p style="font-size:13px; color:#666; font-family:'Space Mono',monospace; letter-spacing:1px;">
+        ▸ RECT → PNJ &nbsp;|&nbsp; CIRCLE → W3Schools
+      </p>
+    </div>
+
+    <!-- IMAGE MAP -->
+    <div class="map-wrapper" id="top">
+      <div class="map-label">◈ INTERACTIVE IMAGE MAP</div>
+      <img
+        src="src/pnj.jpg"
+        alt="Peta Interaktif NusaLink"
+        usemap="#nusamap"
+        style="width:100%; height:320px; object-fit:cover;"
+        id="mapImage"
+      />
+      <map name="nusamap">
+        <!-- RECT: top-left area → PNJ -->
+        <area
+          shape="rect"
+          coords="20,20,200,120"
+          href="https://www.pnj.ac.id"
+          target="_blank"
+          alt="Politeknik Negeri Jakarta"
+          title="🎓 Buka PNJ — Tab Baru (target=_blank)"
+          onmouseover="showHint('RECT → PNJ.ac.id (target=_blank)')"
+          onmouseout="clearHint()"
+        />
+        <!-- CIRCLE: center-right area → W3Schools -->
+        <area
+          shape="circle"
+          coords="430,160,80"
+          href="https://www.w3schools.com"
+          target="_blank"
+          alt="W3Schools"
+          title="📘 Buka W3Schools — Tab Baru (target=_blank)"
+          onmouseover="showHint('CIRCLE → W3Schools.com (target=_blank)')"
+          onmouseout="clearHint()"
+        />
+      </map>
+      <div class="map-hint">
+        <span id="hintText">Hover area untuk info — klik untuk navigasi</span>
+        <span>USEMAP AKTIF</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ HYPERLINK SECTION -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">01 ——</span>
+    <h2 class="section-title">Hyperlink dengan Target Berbeda</h2>
+  </div>
+
+  <div class="link-grid">
+    <!-- TARGET _BLANK -->
+    <div class="link-card">
+      <span class="card-tag tag-blank">target="_blank"</span>
+      <h3 class="card-title">Wikipedia Indonesia</h3>
+      <p class="card-desc">
+        Membuka halaman di <em>tab baru</em> yang terpisah dari jendela saat ini.
+        Pengunjung tetap berada di halaman ini sementara konten baru terbuka di background.
+      </p>
+      <a href="https://id.wikipedia.org" target="_blank" rel="noopener noreferrer" class="card-link">
+        Kunjungi <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- TARGET _SELF -->
+    <div class="link-card">
+      <span class="card-tag tag-self">target="_self"</span>
+      <h3 class="card-title">NASA Official</h3>
+      <p class="card-desc">
+        Membuka halaman di <em>jendela/tab yang sama</em>. Ini adalah perilaku default
+        browser. Halaman saat ini akan digantikan oleh konten baru.
+      </p>
+      <a href="https://www.nasa.gov" target="_self" class="card-link">
+        Kunjungi <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- TARGET _PARENT -->
+    <div class="link-card">
+      <span class="card-tag tag-parent">target="_parent"</span>
+      <h3 class="card-title">WHO Global Health</h3>
+      <p class="card-desc">
+        Membuka halaman di <em>frame induk</em>. Jika tidak ada frame, berperilaku seperti
+        <code>_self</code>. Berguna dalam struktur frameset atau iframe bertingkat.
+      </p>
+      <a href="https://www.who.int" target="_parent" class="card-link">
+        Kunjungi <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="editorial-rule"><span class="rule-ornament">✦</span></div>
+
+<!-- ══════════════════════════════════════ BERITA TERKINI (BOOKMARK) -->
+<div class="news-wrapper">
+  <section class="news-section">
+    <div class="section-header">
+      <span class="section-num">02 ——</span>
+      <h2 class="section-title">Berita Terkini 2026</h2>
+    </div>
+
+    <div class="news-layout">
+
+      <!-- KIRI: Scrollable articles dengan bookmark anchors -->
+      <div>
+        <div class="news-scroll-box">
+
+          <!-- ANCHOR: teknologi -->
+          <span class="bookmark-anchor" id="teknologi"></span>
+          <article class="news-article">
+            <div class="article-cat">🔬 Teknologi</div>
+            <h2 class="article-title">
+              <a href="#teknologi">Indonesia Luncurkan Satelit Komunikasi Generasi Ketiga</a>
+            </h2>
+            <div class="article-meta">
+              <span>12 Mar 2026</span><span>BRIN / LAPAN</span><span>7 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Badan Riset dan Inovasi Nasional (BRIN) bersama mitra industri domestik berhasil meluncurkan Satelit Nusantara-3 dari Pusat Antariksa Guyana Prancis pada Rabu malam. Satelit berbobot 4,2 ton ini membawa 48 transponder Ka-band yang akan meningkatkan kapasitas broadband nasional secara signifikan.</p>
+              <p>Menteri Komunikasi dan Informatika menyatakan bahwa peluncuran ini merupakan tonggak bersejarah dalam kedaulatan digital Indonesia. Proyek senilai Rp 8,4 triliun ini didanai penuh oleh APBN tanpa keterlibatan utang luar negeri.</p>
+            </div>
+            <a href="https://www.brin.go.id" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+          <!-- ANCHOR: ekonomi -->
+          <span class="bookmark-anchor" id="ekonomi"></span>
+          <article class="news-article">
+            <div class="article-cat">📈 Ekonomi</div>
+            <h2 class="article-title">
+              <a href="#ekonomi">IHSG Menembus Level 9.000 untuk Pertama Kalinya</a>
+            </h2>
+            <div class="article-meta">
+              <span>12 Mar 2026</span><span>BEI / IDX</span><span>5 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Indeks Harga Saham Gabungan (IHSG) mencapai rekor tertinggi sepanjang masa pada perdagangan Kamis pagi, menembus level 9.000 untuk pertama kalinya. Lonjakan ini ditopang oleh aliran masuk investasi asing yang signifikan dan laporan kinerja emiten Q4 2025 yang melampaui ekspektasi pasar.</p>
+              <p>Sektor perbankan, teknologi, dan pertambangan nikel memimpin kenaikan. Bank Indonesia mempertahankan suku bunga acuan di 5,25% sambil memproyeksikan pertumbuhan ekonomi 5,8% untuk 2026.</p>
+            </div>
+            <a href="https://www.idx.co.id" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+          <!-- ANCHOR: lingkungan -->
+          <span class="bookmark-anchor" id="lingkungan"></span>
+          <article class="news-article">
+            <div class="article-cat">🌿 Lingkungan</div>
+            <h2 class="article-title">
+              <a href="#lingkungan">Proyek Rehabilitasi Mangrove Terbesar di Dunia Dimulai di Kalimantan</a>
+            </h2>
+            <div class="article-meta">
+              <span>11 Mar 2026</span><span>KLHK</span><span>6 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Kementerian Lingkungan Hidup dan Kehutanan memulai fase kedua program restorasi mangrove nasional yang kini menjadi program rehabilitasi mangrove terbesar di dunia. Target penanaman 600.000 hektare di Kalimantan, Sumatera, dan Papua dalam tiga tahun ke depan.</p>
+              <p>Program ini melibatkan 2.400 kelompok masyarakat pesisir dan didukung pendanaan dari Green Climate Fund sebesar USD 1,2 miliar. Ekosistem mangrove Indonesia diperkirakan menyerap 3 juta ton CO₂ per tahun.</p>
+            </div>
+            <a href="https://www.menlhk.go.id" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+          <!-- ANCHOR: kesehatan -->
+          <span class="bookmark-anchor" id="kesehatan"></span>
+          <article class="news-article">
+            <div class="article-cat">🏥 Kesehatan</div>
+            <h2 class="article-title">
+              <a href="#kesehatan">Vaksin Dengue Generasi Baru Produksi Bio Farma Raih Izin WHO</a>
+            </h2>
+            <div class="article-meta">
+              <span>11 Mar 2026</span><span>Kemenkes / WHO</span><span>4 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Bio Farma berhasil mendapatkan prequalification dari WHO untuk vaksin dengue tetravalent terbaru yang dikembangkan bersama Lembaga Eijkman dan BRIN. Vaksin ini efektif 94% dalam uji klinis fase III yang melibatkan 18.000 relawan di enam negara ASEAN.</p>
+              <p>Ini menjadikan Indonesia negara pertama di Asia Tenggara yang memproduksi vaksin dengue berstandar WHO secara mandiri. Distribusi massal dijadwalkan mulai April 2026 melalui program imunisasi nasional.</p>
+            </div>
+            <a href="https://www.biofarma.co.id" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+          <!-- ANCHOR: olahraga -->
+          <span class="bookmark-anchor" id="olahraga"></span>
+          <article class="news-article">
+            <div class="article-cat">⚽ Olahraga</div>
+            <h2 class="article-title">
+              <a href="#olahraga">Timnas U-23 Lolos ke Semifinal Piala Asia 2026</a>
+            </h2>
+            <div class="article-meta">
+              <span>10 Mar 2026</span><span>PSSI / AFC</span><span>3 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Tim Nasional Indonesia U-23 mengguncang sepak bola Asia setelah mengalahkan Jepang 2-1 di babak perempat final Piala Asia U-23 yang berlangsung di Doha, Qatar. Gol kemenangan dicetak Marselino Ferdinan pada menit ke-88.</p>
+              <p>Indonesia akan menghadapi Korea Selatan di semifinal pada 15 Maret 2026. Ini merupakan pencapaian terbaik Timnas dalam sejarah turnamen kelompok umur AFC.</p>
+            </div>
+            <a href="https://www.pssi.org" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+          <!-- ANCHOR: hiburan -->
+          <span class="bookmark-anchor" id="hiburan"></span>
+          <article class="news-article">
+            <div class="article-cat">🎬 Hiburan</div>
+            <h2 class="article-title">
+              <a href="#hiburan">Film "Nusantara: Rise of the Archipelago" Rilis Global</a>
+            </h2>
+            <div class="article-meta">
+              <span>10 Mar 2026</span><span>Studio Garam Pictures</span><span>4 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Film animasi epik produksi Indonesia "Nusantara: Rise of the Archipelago" tayang serentak di 42 negara, menjadi film animasi Indonesia pertama yang mendapatkan distribusi global dari studio besar Hollywood.</p>
+              <p>Film berdurasi 118 menit ini mengangkat kisah mitologi Nusantara dengan visual CGI berskala dunia. Dalam tiga hari perdana, film ini meraup pendapatan USD 28 juta dan mendapat skor 97% di Rotten Tomatoes.</p>
+            </div>
+            <a href="https://www.imdb.com" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+          <!-- ANCHOR: internasional -->
+          <span class="bookmark-anchor" id="internasional"></span>
+          <article class="news-article">
+            <div class="article-cat">🌐 Internasional</div>
+            <h2 class="article-title">
+              <a href="#internasional">KTT ASEAN 2026 Sahkan Deklarasi Perdamaian Digital</a>
+            </h2>
+            <div class="article-meta">
+              <span>09 Mar 2026</span><span>Sekretariat ASEAN</span><span>5 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Sepuluh negara anggota ASEAN menandatangani "Deklarasi Bali II" dalam KTT yang digelar di Bali, Indonesia. Deklarasi ini menetapkan kerangka hukum bersama untuk keamanan siber, tata kelola AI, dan perlindungan data lintas batas.</p>
+              <p>Indonesia menjadi pemegang Keketuaan ASEAN 2026 dan mendorong agenda transformasi digital inklusif yang menjangkau seluruh lapisan masyarakat di kawasan, termasuk 120 juta penduduk tanpa akses internet.</p>
+            </div>
+            <a href="https://asean.org" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+          <!-- ANCHOR: pendidikan -->
+          <span class="bookmark-anchor" id="pendidikan"></span>
+          <article class="news-article">
+            <div class="article-cat">🎓 Pendidikan</div>
+            <h2 class="article-title">
+              <a href="#pendidikan">Politeknik Negeri Jakarta Raih Akreditasi Internasional ABET</a>
+            </h2>
+            <div class="article-meta">
+              <span>08 Mar 2026</span><span>PNJ / Kemendikbud</span><span>4 min baca</span>
+            </div>
+            <div class="article-body">
+              <p>Politeknik Negeri Jakarta (PNJ) menjadi politeknik pertama di Indonesia yang meraih akreditasi internasional dari ABET (Accreditation Board for Engineering and Technology) Amerika Serikat untuk empat program studinya.</p>
+              <p>Pencapaian ini memperkuat posisi PNJ sebagai institusi pendidikan vokasi terkemuka dan membuka peluang kolaborasi riset dengan 4.000+ institusi anggota ABET di 41 negara. Direktur PNJ menyatakan target masuk 10 besar politeknik terbaik Asia pada 2030.</p>
+            </div>
+            <a href="https://www.pnj.ac.id" target="_blank" rel="noopener" class="read-more">Baca selengkapnya ↗</a>
+          </article>
+
+        </div><!-- end scroll box -->
+      </div>
+
+      <!-- KANAN: Sidebar -->
+      <aside class="news-sidebar">
+        <div class="sidebar-head">Berita Populer</div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">01</div>
+          <div class="sidebar-item-title">
+            <a href="#teknologi">Satelit Nusantara-3 Sukses Mengangkasa</a>
+          </div>
+          <div class="sidebar-item-date">12 Mar 2026 · Teknologi</div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">02</div>
+          <div class="sidebar-item-title">
+            <a href="#ekonomi">IHSG Tembus Rekor 9.000 Poin</a>
+          </div>
+          <div class="sidebar-item-date">12 Mar 2026 · Ekonomi</div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">03</div>
+          <div class="sidebar-item-title">
+            <a href="#olahraga">Timnas U-23 Kalahkan Jepang 2-1</a>
+          </div>
+          <div class="sidebar-item-date">10 Mar 2026 · Olahraga</div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">04</div>
+          <div class="sidebar-item-title">
+            <a href="#pendidikan">PNJ Raih Akreditasi ABET Internasional</a>
+          </div>
+          <div class="sidebar-item-date">08 Mar 2026 · Pendidikan</div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">05</div>
+          <div class="sidebar-item-title">
+            <a href="#hiburan">Animasi "Nusantara" Tayang di 42 Negara</a>
+          </div>
+          <div class="sidebar-item-date">10 Mar 2026 · Hiburan</div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">06</div>
+          <div class="sidebar-item-title">
+            <a href="#lingkungan">Rehabilitasi Mangrove 600.000 Ha Dimulai</a>
+          </div>
+          <div class="sidebar-item-date">11 Mar 2026 · Lingkungan</div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">07</div>
+          <div class="sidebar-item-title">
+            <a href="#kesehatan">Vaksin Dengue Bio Farma Kantongi Izin WHO</a>
+          </div>
+          <div class="sidebar-item-date">11 Mar 2026 · Kesehatan</div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-item-num">08</div>
+          <div class="sidebar-item-title">
+            <a href="#internasional">ASEAN Sahkan Deklarasi Bali II</a>
+          </div>
+          <div class="sidebar-item-date">09 Mar 2026 · Internasional</div>
+        </div>
+
+      </aside>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════ FOOTER -->
+<footer>
+  <p>© 2026 <strong>Farkhan Abdilah</strong> TI-2B  &nbsp;|&nbsp;
+    Dibuat untuk Tugas Praktikum Pemrograman Web &nbsp;|&nbsp;
+    <a href="https://www.pnj.ac.id" target="_blank">PNJ.ac.id</a>
+  </p>
+  <p style="margin-top:8px; font-size:9px; letter-spacing:2px; opacity:0.5;">
+    SEMUA KONTEN BERITA BERSIFAT FIKTIF UNTUK KEPERLUAN AKADEMIS
+  </p>
+</footer>
+
+<script>
+  // ── SCROLL PROGRESS BAR
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('progress');
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    el.style.width = pct + '%';
+  });
+
+  // ── IMAGE MAP HINT
+  function showHint(txt) {
+    document.getElementById('hintText').textContent = '▸ ' + txt;
+  }
+  function clearHint() {
+    document.getElementById('hintText').textContent = 'Hover area untuk info — klik untuk navigasi';
+  }
+
+  // ── ACTIVE NAV HIGHLIGHT ON SCROLL
+  const sections = ['top','teknologi','ekonomi','lingkungan','kesehatan','olahraga','hiburan','internasional','pendidikan'];
+  window.addEventListener('scroll', () => {
+    let current = 'top';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 120) current = id;
+    });
+    document.querySelectorAll('.nav-bar a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
